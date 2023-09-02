@@ -6,6 +6,7 @@
 	import { fetchNewDrink } from '../../../API/API.js';
 	import { SavedDrinkStore } from '../../../drinkStore.js';
 	import type { DrinkType } from '../../../types.js';
+	import BackBtn from '../../../components/BackBtn.svelte';
 
 	const param = $page.url.searchParams.get('id');
 	const drinkURL = `${BASE_URL}lookup.php?i=${param}`;
@@ -38,7 +39,7 @@
 				class="flex-1 object-cover mx-auto h-full w-full"
 			/>
 			<div class="mx-auto flex-1 px-4 mt-5">
-				<a href="/" class="btn btn-sm text-sm variant-outline-surface mb-5"> Back to Home</a>
+				<BackBtn />
 				<div class="flex align-middle gap-3">
 					<div class="variant-glass-surface outline outline-1 w-full p-3 flex justify-between">
 						<h1 class="m-0 leading-snug">{drink.name}</h1>

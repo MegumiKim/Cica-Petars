@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { BASE_URL } from '../../../API/constants';
 	import Card from '../../../components/Card.svelte';
+	import BackBtn from '../../../components/BackBtn.svelte';
 	const param = $page.url.searchParams.get('i');
 	const URL_INGREDIENT = BASE_URL + `search.php?i=${param}`;
 	const URL_DRINKS_BY_INGREDIENT = BASE_URL + `/filter.php?i=${param}`;
@@ -38,14 +39,7 @@
 </script>
 
 <div class="m-auto max-w-[1000px] justify-center p-3 sm:px-5">
-	<button
-		on:click={() => {
-			history.back();
-		}}
-		class="btn btn-sm text-sm variant-outline-surface my-5"
-	>
-		Back
-	</button>
+<BackBtn />
 	<div class="m-auto">
 		<h1 class="text-center sm:text-5xl m-auto mb-5">{ingredient.strIngredient}</h1>
 		<div class="md:flex align-middle max-w-full">

@@ -7,6 +7,7 @@ export async function fetchListOfDrinks(URL: string) {
 
 		if (!result) {
 			console.log('no drinks found');
+			return [];
 			// Show Error message
 		}
 		const drinks = json.drinks.map((drink) => {
@@ -16,11 +17,12 @@ export async function fetchListOfDrinks(URL: string) {
 				id: drink.idDrink
 			};
 		});
-		allDrinks.update((state) => drinks);
+		// allDrinks.update((state) => drinks);
 
 		return drinks;
 	} catch (e) {
 		console.log('error in fetching drinks', e);
+		return [];
 		// Show Error message
 	}
 }

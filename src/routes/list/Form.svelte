@@ -4,12 +4,12 @@
 	import type { DrinkThumbType } from '../../types';
 	import { fetchListOfDrinks } from '../../utils/fetchListOfAllDrinks';
 
-
-	function handleChange(event: Event) {
+	async function handleChange(event: Event) {
 		let displayName = event.currentTarget.value.replaceAll('_', ' ');
 		UserFilter.update((currentFilter) => displayName);
 
-		fetchListOfDrinks(filteredURL(event.currentTarget.value));
+		let drinksData = await fetchListOfDrinks(filteredURL(event.currentTarget.value));
+		allDrinks.set(drinksData)
 	}
 
 	const filteredURL = (category: string) => {
@@ -20,8 +20,7 @@
 	};
 </script>
 
-<section class="">
-	<form action="" class="gap-3">
+	<form action="" class="gap-3 mt-3">
 		<select
 			class="select variant-form-material"
 			placeholder="Select Category"
@@ -38,4 +37,3 @@
 			<option value="Non_Alcoholic">Non Alcoholic</option>
 		</select>
 	</form>
-</section>
