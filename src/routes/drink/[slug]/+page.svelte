@@ -4,7 +4,7 @@
 	import { BASE_URL } from '../../../API/constants.js';
 	import { onMount } from 'svelte';
 	import { fetchNewDrink } from '../../../API/API.js';
-	import { SavedDrinkStore } from '../../../drinkStore.js';
+	import {  SavedDrinkStore, SingleDrink } from '../../../drinkStore.js';
 	import type { DrinkType } from '../../../types.js';
 	import BackBtn from '../../../components/BackBtn.svelte';
 
@@ -18,6 +18,7 @@
 	onMount(async () => {
 		drink = await fetchNewDrink(drinkURL);
 		alreadySaved ? (isSaved = true) : false;
+		// CurrentPathStore.set(window.location.pathname)
 	});
 
 	function onSave(id: string) {
@@ -38,9 +39,9 @@
 				alt={drink.name}
 				class="flex-1 object-cover mx-auto h-full w-full"
 			/>
-			<div class="mx-auto flex-1 px-4 mt-5">
+			<div class="mx-auto flex-1">
 				<BackBtn />
-				<div class="flex align-middle gap-3">
+				<div class="flex align-middle gap-3 mt-5">
 					<div class="variant-glass-surface outline outline-1 w-full p-3 flex justify-between">
 						<h1 class="m-0 leading-snug">{drink.name}</h1>
 						<button class="inline-block" on:click={onSave(drink.id)}>

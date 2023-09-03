@@ -21,12 +21,6 @@
 		isMenuVisible = !isMenuVisible;
 	};
 
-		//Fin current page
-		const findCurrentPage = () => {
-		 
-			console.log(window.location.pathname);
-		}
-
 // let currentPage = window.location.pathname;
 
 </script>
@@ -50,20 +44,19 @@
 						<div
 							class="{isMenuVisible
 								? 'block'
-								: 'hidden'} text-right absolute top-10 right-0 variant-glass-tertiary p-3 rounded sm:static sm:flex sm:py-0 m-auto sm:order-2"
+								: 'hidden'} text-right absolute top-12 right-0 p-3 rounded sm:static sm:flex sm:py-0 m-auto sm:order-2 sm:bg-transparent bg-purple-950 bg-opacity-90 "
 						>
-						<a href="/list/" class="font-bold px-5 my-3 block hover:variant-outline-primary"
+						<a href="/list/" class="font-bold px-5 py-2  my-3 block hover:variant-outline-primary"
 						>Categories</a
 						>
 						<a
 						href="/ingredients/"
-						class="font-bold px-5 my-3 block hover:variant-outline-primary">Ingredients</a
+						class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary">Ingredients</a
 						>
 						<a
 							href="/saved-drinks/"
-							class="font-bold px-5 my-3 block hover:variant-outline-primary">Saved</a
+							class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary">Saved</a
 						>
-						<button on:click={findCurrentPage}>path</button>
 						</div>
 					</div>
 				</div>

@@ -12,7 +12,7 @@ const unSaveDrink =(id:string)=>{
 <div class="container h-full mx-auto max-w-[1000px] p-4">
   <h1 class="my-5">Saved Drinks</h1>
 
-  <div class="container grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {#if $SavedDrinkStore.length}
       {#each $SavedDrinkStore as drink}
         <div class="relative">

@@ -11,7 +11,7 @@
 	onMount(async () => {
 		const drinks:Promise<DrinkThumbType[] | []> = await fetchListOfDrinks(`${BASE_URL}/filter.php?c=Ordinary_Drink`);
 		allDrinks.set(drinks)
-
+		
 		return () => {
 			console.log('destroyed');
 		};
@@ -19,14 +19,15 @@
 
 </script>
 
-<div class="container mx-auto max-w-[800px] justify-center p-5">
+<div class="container m-auto max-w-[1000px] justify-center p-5">
+	<h1 class="my-6">Categories</h1>
 	<Form />
 	{#if $allDrinks.length}
 		<div class="container flex mt-8 gap-5">
 			<h2>{$UserFilter}</h2>
 			<h2 class="">({$allDrinks.length} drinks)</h2>
 		</div>
-		<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+		<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
 			{#each $allDrinks as drink}
 				<Card {drink} />
 			{/each}
