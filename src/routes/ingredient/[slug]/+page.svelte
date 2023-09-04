@@ -4,7 +4,7 @@
 	import { BASE_URL } from '../../../API/constants';
 	import Card from '../../../components/Card.svelte';
 	import BackBtn from '../../../components/BackBtn.svelte';
-	import type {IngredientType} from "../../../types"
+	import type {DrinkThumbType, IngredientType} from "../../../types"
 	import Icon from '@iconify/svelte';
 
 	const param = $page.url.searchParams.get('i');
@@ -12,7 +12,7 @@
 	const URL_DRINKS_BY_INGREDIENT = BASE_URL + `/filter.php?i=${param}`;
 
 	let ingredient = {};
-	let drinks: [] = [];
+	let drinks: DrinkThumbType[] = [];
 
 	async function getIngredient(url: string): Promise<IngredientType> {
 		const result = await fetch(url);
@@ -42,6 +42,8 @@ return {
 	onMount(async () => {
 		ingredient = await getIngredient(URL_INGREDIENT);
 		drinks = await getDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
+		console.log(drinks);
+		
 		return () => {
 			console.log('destroyed');
 		};

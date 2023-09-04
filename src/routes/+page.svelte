@@ -48,9 +48,6 @@
 	</section>
 
 	<section class="flex-1 m-auto">
-		<!-- <div class="flex variant-glass-surface gap-5 align-middle px-5">
-			<h2 class="">Today's Welcome Drink:</h2>
-		</div> -->
 		<WelcomeDrink drink={welcomeDrink} />
 		<button
 			type="button"

@@ -9,9 +9,9 @@
 
 			<a
 				href={`/drink/[slug]?id=${drink.id}`}
-				class="absolute bottom-4 variant-glass-surface px-9 overflow-clip"
+				class="sm:px-4 sm:absolute sm:outline-0 bottom-4 variant-glass-surface overflow-clip"
 			>
-			<lead class="italic text-sm">Today's Welcome Drink:</lead>
+			<p class="italic text-sm">Today's Welcome Drink:</p>
 				<h1 class="underline leading-snug">{drink.name}</h1>
 		</a>
 		</div>

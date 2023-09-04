@@ -1,34 +1,44 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { page } from '$app/stores';
 	import { BASE_URL } from '../../../API/constants.js';
 	import { onMount } from 'svelte';
 	import { fetchNewDrink } from '../../../API/API.js';
-	import {  SavedDrinkStore, SingleDrink } from '../../../drinkStore.js';
+	import {  SavedDrinkStore } from '../../../drinkStore.js';
 	import type { DrinkType } from '../../../types.js';
 	import BackBtn from '../../../components/BackBtn.svelte';
-
-	const param = $page.url.searchParams.get('id');
-	const drinkURL = `${BASE_URL}lookup.php?i=${param}`;
-	const alreadySaved: {} | undefined = $SavedDrinkStore.find((item) => item.id === param);
-
+	import { page } from '$app/stores';
+	
 	let drink: DrinkType | undefined;
-	let isSaved: boolean = false;
+	let isAlreadySaved: boolean = false;
+	
+  let drinkID:string |null= $page.url.searchParams.get('id');
+	let drinkURL:string = `${BASE_URL}lookup.php?i=${drinkID}`;
 
-	onMount(async () => {
+	const fetchDrink = async ()=>{
 		drink = await fetchNewDrink(drinkURL);
-		alreadySaved ? (isSaved = true) : false;
-		// CurrentPathStore.set(window.location.pathname)
+		isAlreadySaved = Boolean($SavedDrinkStore.find((item:DrinkType) => item.id === drinkID))
+	}
+	onMount(async()=>{
+		await fetchDrink()
 	});
 
-	function onSave(id: string) {
-		if (alreadySaved !== undefined) {
-			SavedDrinkStore.update((prev) => prev.filter((drink) => drink.id !== id));
-		} else {
-			SavedDrinkStore.update((prev) => [drink, ...$SavedDrinkStore]);
+	$: {
+		if (drinkID !== $page.url.searchParams.get('id')) {
+			drinkID = $page.url.searchParams.get('id');
+			drinkURL = `${BASE_URL}lookup.php?i=${drinkID}`;
+			 fetchDrink();
 		}
-		isSaved = !isSaved;
 	}
+
+	function onSave(id: string) {
+			if (isAlreadySaved) {
+				SavedDrinkStore.update((prev) => prev.filter((d) => d.id !== id));
+			} else {
+				SavedDrinkStore.update((prev) => [drink, ...prev]);
+			}
+			isAlreadySaved = !isAlreadySaved;
+		}
+
 </script>
 
 <div class="container h-full mx-auto sm:flex max-w-[1000px] justify-center p-3">
@@ -39,19 +49,19 @@
 				alt={drink.name}
 				class="flex-1 object-cover mx-auto h-full w-full"
 			/>
-			<div class="mx-auto flex-1">
+			<div class="mx-auto flex-1 py-3">
 				<BackBtn />
 				<div class="flex align-middle gap-3 mt-5">
 					<div class="variant-glass-surface outline outline-1 w-full p-3 flex justify-between">
 						<h1 class="m-0 leading-snug">{drink.name}</h1>
-						<button class="inline-block" on:click={onSave(drink.id)}>
+						<button class="inline-block" on:click={()=>onSave(drink.id)}>
 							<Icon
 								icon="uil:favorite"
-								class="text-2xl mx-auto hover:text-yellow-500 {isSaved
+								class="text-2xl mx-auto hover:text-yellow-500 {isAlreadySaved
 									? 'text-yellow-500'
 									: 'text-white'}"
 							/>
-							<small class="mx-auto" data-set="popup">{isSaved ? 'Unsave' : 'save'}</small>
+							<small class="mx-auto" data-set="popup">{isAlreadySaved ? 'Unsave' : 'save'}</small>
 						</button>
 					</div>
 				</div>

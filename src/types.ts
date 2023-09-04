@@ -12,9 +12,9 @@ export type IngredientType = {
 };
 
 export interface DrinkThumbType {
-	name: string;
-	thumbUrl: string;
-	id: string;
+	name: string | undefined;
+	thumbUrl: string | undefined;
+	id: string | undefined;
 }
 
 export interface DrinkType extends DrinkThumbType {

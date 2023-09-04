@@ -12,3 +12,4 @@ export const UserFilter = writable<string>('Ordinary Drink');
 export const SavedDrinkStore = localStorageStore('savedDrink', []);
 
 export const CurrentPathStore = writable<string>('/');
+// export const pageStore = writable();
