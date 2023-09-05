@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { BASE_URL } from '../../../API/constants';
 	import Card from '../../../components/Card.svelte';
-	import BackBtn from '../../../components/BackBtn.svelte';
+	import BackBtn from '../../../components/ui/BackBtn.svelte';
 	import type {DrinkThumbType, IngredientType} from "../../../types"
 	import Icon from '@iconify/svelte';
 

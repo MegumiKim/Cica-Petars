@@ -1,22 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { BASE_URL } from '../../API/constants';
-	import { ConicGradient } from '@skeletonlabs/skeleton';
 	import IngredientSearchForm from './ingredientSearchForm.svelte';
 	import IngredientCard from './ingredientCard.svelte';
-	import conicStops from '../../utils/conicStops';
+	import Loader from '../../components/ui/Loader.svelte';
+	import ServerError from '../../components/ui/serverError.svelte';
 
 	let ingredients: {
 		name: string;
 	}[] | null;
 
 	let loading:boolean = false;
-
-// 	const conicStops = [
-// 	{ color: 'transparent', start: 0, end: 25 },
-// 	{ color: 'rgb(var(--color-primary-500))', start: 75, end: 100 }
-// ];
-
 function updateSearchResult(result:[{name:string}]){
 	ingredients = result
 }
@@ -51,9 +45,7 @@ function updateSearchResult(result:[{name:string}]){
 	<h1 class="my-6">Ingredients</h1>
 	<IngredientSearchForm {updateSearchResult} />
 	{#if loading}
-	<div class="my-24">
-		<ConicGradient stops={conicStops} spin ></ConicGradient>
-	</div>
+	<Loader />
 	{/if}
 	<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 my-10 gap-3 mx-auto">
 {#if ingredients}		
@@ -61,7 +53,7 @@ function updateSearchResult(result:[{name:string}]){
 <IngredientCard {ingredient}/>
 		{/each}
 {:else}
-		<h2>Server error :-/</h2>
+<ServerError />
 {/if}
 	</div>
 </div>

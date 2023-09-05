@@ -8,9 +8,8 @@
 	import { BASE_URL } from '../API/constants';
 	// Svelte
 	import { onMount } from 'svelte';
-	//Skeleton ui
-	import { ConicGradient } from '@skeletonlabs/skeleton';
-	import conicStops from '../utils/conicStops';
+	import Loader from '../components/ui/Loader.svelte';
+	import ServerError from '../components/ui/serverError.svelte';
 
 
 	const randomDrinkURL: string = BASE_URL + 'random.php';
@@ -50,12 +49,10 @@ let showError = false;
 
 	<section class="flex-1 m-auto">
 		{#if loading}
-		<div class="my-24">
-			<ConicGradient stops={conicStops} spin ></ConicGradient>
-		</div>
+ 		<Loader />
 		{/if}
 		{#if showError}
-		<h2>Server Error :/</h2>
+		<ServerError />
 		{/if}
 		<WelcomeDrink drink={welcomeDrink} />
 		<button

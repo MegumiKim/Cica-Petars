@@ -1,22 +1,37 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	import { BASE_URL } from '../../../API/constants.js';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+
+	import { BASE_URL } from '../../../API/constants.js';
 	import { fetchNewDrink } from '../../../API/API.js';
 	import {  SavedDrinkStore } from '../../../drinkStore.js';
+	//type
 	import type { DrinkType } from '../../../types.js';
-	import BackBtn from '../../../components/BackBtn.svelte';
-	import { page } from '$app/stores';
+	
+	//components
+	import Icon from '@iconify/svelte';
+	import BackBtn from '../../../components/ui/BackBtn.svelte';
+	import Loader from '../../../components/ui/Loader.svelte';
+	import SaveBtn from './SaveBtn.svelte';
+	import ServerError from '../../../components/ui/serverError.svelte';
 	
 	let drink: DrinkType | undefined;
 	let isAlreadySaved: boolean = false;
 	
   let drinkID:string |null= $page.url.searchParams.get('id');
 	let drinkURL:string = `${BASE_URL}lookup.php?i=${drinkID}`;
+	let loading:boolean = true;
+	let showError:boolean = false;
 
 	const fetchDrink = async ()=>{
-		drink = await fetchNewDrink(drinkURL);
-		isAlreadySaved = Boolean($SavedDrinkStore.find((item:DrinkType) => item.id === drinkID))
+		try{
+			drink = await fetchNewDrink(drinkURL);
+			isAlreadySaved = Boolean($SavedDrinkStore.find((item:DrinkType) => item.id === drinkID))
+		}catch{
+			showError = true
+		}finally{
+			loading = false;
+		}
 	}
 	onMount(async()=>{
 		await fetchDrink()
@@ -30,18 +45,12 @@
 		}
 	}
 
-	function onSave(id: string) {
-			if (isAlreadySaved) {
-				SavedDrinkStore.update((prev) => prev.filter((d) => d.id !== id));
-			} else {
-				SavedDrinkStore.update((prev) => [drink, ...prev]);
-			}
-			isAlreadySaved = !isAlreadySaved;
-		}
-
 </script>
 
 <div class="container h-full mx-auto sm:flex max-w-[1000px] justify-center p-3">
+	{#if loading}
+		<Loader />
+	{/if}
 	{#if drink}
 		<div class="sm:flex gap-5">
 			<div class="flex-1 mx-auto">
@@ -56,15 +65,7 @@
 				<div class="flex align-middle gap-3 mt-5">
 					<div class="variant-glass-surface outline outline-1 w-full p-3 flex justify-between">
 						<h1 class="m-0 leading-snug">{drink.name}</h1>
-						<button class="inline-block" on:click={()=>onSave(drink.id)}>
-							<Icon
-								icon="uil:favorite"
-								class="text-2xl mx-auto hover:text-yellow-500 {isAlreadySaved
-									? 'text-yellow-500'
-									: 'text-white'}"
-							/>
-							<small class="mx-auto" data-set="popup">{isAlreadySaved ? 'Unsave' : 'save'}</small>
-						</button>
+						<SaveBtn {drink} {isAlreadySaved}/>
 					</div>
 				</div>
 				<table class="outline outline-1 w-full">
@@ -95,7 +96,9 @@
 				{/if}
 			</div>
 		</div>
-	{:else}
-		<p>No drink available.</p>
-	{/if}
+
+		{/if}
+		{#if showError}
+		<ServerError />
+		{/if}
 </div>

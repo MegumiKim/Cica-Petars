@@ -7,7 +7,7 @@
 	export let searchTerm: string = '';
 	let showResultBox = false;
 	let showError = false;
-	let searchResult: DrinkType | null;
+	let searchResult: DrinkType ;
 
 	const handleSubmit = async () => {
 		try{
@@ -27,7 +27,6 @@
 	};
 
 	const handleClick = () => {
-		// SingleDrink.set(searchResult)
 		showResultBox = false;
 		goto(`/drink/[slug]/?id=${searchResult.id}`);
 
