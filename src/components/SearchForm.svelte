@@ -2,26 +2,28 @@
 	import { BASE_URL } from '../API/constants';
 	import { fetchNewDrink } from '../API/API';
 	import { goto } from '$app/navigation';
-	// import { SingleDrink } from '../drinkStore';
+	import type { DrinkType } from '../types';
 
 	export let searchTerm: string = '';
 	let showResultBox = false;
-	let searchResult: {};
+	let showError = false;
+	let searchResult: DrinkType | null;
 
 	const handleSubmit = async () => {
-		const URL: string = `${BASE_URL}search.php?s=${searchTerm}`;
-		const drink = await fetchNewDrink(URL);
+		try{
+			const URL: string = `${BASE_URL}search.php?s=${searchTerm}`;
+			const drink = await fetchNewDrink(URL);
 
-		if (drink) {
-			searchResult = drink;
-
-		} else {
-			searchResult = {
-				name: 'No result'
-			};
-		}
-		showResultBox = true;
+			if (drink) {
+				searchResult = drink;
+				showResultBox = true;
 		searchTerm = '';
+		}
+	}catch(error){
+		console.log(error);
+		showError = true
+	}
+
 	};
 
 	const handleClick = () => {
@@ -41,10 +43,15 @@
 			type="text"
 			placeholder="search by name"
 			bind:value={searchTerm}
+			on:keydown={()=>showError = false}
 		/>
 		{#if showResultBox}
-			<button class="block select absolute" on:click={() => handleClick()}>
+
+		<button class="block select absolute" on:click={() => handleClick()}>
 				{searchResult.name}</button>
+		{/if}
+		{#if showError}
+		<p class="block absolute py-1">No Result</p>
 		{/if}
 	</div>
 </form>

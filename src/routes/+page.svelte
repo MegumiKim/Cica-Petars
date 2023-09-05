@@ -8,26 +8,28 @@
 	import { BASE_URL } from '../API/constants';
 	// Svelte
 	import { onMount } from 'svelte';
-	
+	//Skeleton ui
+	import { ConicGradient } from '@skeletonlabs/skeleton';
+	import conicStops from '../utils/conicStops';
+
 
 	const randomDrinkURL: string = BASE_URL + 'random.php';
 
-	let welcomeDrink: DrinkType | undefined;
-
+	let welcomeDrink: DrinkType;
+	let loading:boolean = false;
+let showError = false;
 	onMount(async () => {
-		welcomeDrink = await fetchNewDrink(randomDrinkURL);
-
-		return () => {
-			console.log('destroyed');
-		};
+		getRandomDrink()
 	});
 
 	async function getRandomDrink() {
-		try {
-			welcomeDrink = await fetchNewDrink(randomDrinkURL);
-		} catch (error) {
-			console.error('Error fetching drink:', error);
-		}
+			loading = true
+			try{
+				welcomeDrink = await fetchNewDrink(randomDrinkURL);
+			}catch{
+				showError = true
+			}
+			loading = false
 	}
 </script>
 
@@ -37,8 +39,7 @@
 		<p class="">Discover The World of Cocktails</p>
 		<div class="flex justify-center mt-4 gap-4">
 			<a
-				type="button"
-				class="w-min px-5 sm:text-lg font-bold btn variant-ringed-primary"
+				class="sm:text-lg px-5 font-bold btn variant-ringed-primary"
 				href="/list">Categories</a
 			>
 			<a href="/ingredients/" class="sm:text-lg font-bold btn variant-ghost-surface px-5"
@@ -48,6 +49,14 @@
 	</section>
 
 	<section class="flex-1 m-auto">
+		{#if loading}
+		<div class="my-24">
+			<ConicGradient stops={conicStops} spin ></ConicGradient>
+		</div>
+		{/if}
+		{#if showError}
+		<h2>Server Error :/</h2>
+		{/if}
 		<WelcomeDrink drink={welcomeDrink} />
 		<button
 			type="button"

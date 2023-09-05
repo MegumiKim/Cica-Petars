@@ -44,11 +44,13 @@
 <div class="container h-full mx-auto sm:flex max-w-[1000px] justify-center p-3">
 	{#if drink}
 		<div class="sm:flex gap-5">
-			<img
-				src={drink.thumbUrl}
-				alt={drink.name}
-				class="flex-1 object-cover mx-auto h-full w-full"
-			/>
+			<div class="flex-1 mx-auto">
+				<img
+					src={drink.thumbUrl}
+					alt={drink.name}
+					class="flex-1 object-cover mx-auto h-full w-full"
+				/>
+			</div>
 			<div class="mx-auto flex-1 py-3">
 				<BackBtn />
 				<div class="flex align-middle gap-3 mt-5">

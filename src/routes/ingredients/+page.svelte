@@ -1,69 +1,67 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { BASE_URL } from '../../API/constants';
+	import { ConicGradient } from '@skeletonlabs/skeleton';
+	import IngredientSearchForm from './ingredientSearchForm.svelte';
+	import IngredientCard from './ingredientCard.svelte';
+	import conicStops from '../../utils/conicStops';
 
 	let ingredients: {
-		strIngredient1: string;
-	}[] = [];
+		name: string;
+	}[] | null;
 
-	let searchTerm: string;
+	let loading:boolean = false;
 
-	async function getAllIngredients() {
-		const result = await fetch(BASE_URL + 'list.php?i=list');
-		const json = await result.json();
-		ingredients = json.drinks;
+// 	const conicStops = [
+// 	{ color: 'transparent', start: 0, end: 25 },
+// 	{ color: 'rgb(var(--color-primary-500))', start: 75, end: 100 }
+// ];
+
+function updateSearchResult(result:[{name:string}]){
+	ingredients = result
+}
+
+	export async function getAllIngredients() {
+		loading = true
+		try{
+					const result = await fetch(BASE_URL + 'list.php?i=list');
+					const json = await result.json();
+
+					if(json.drinks){
+						ingredients = json.drinks.map((ingredient: { strIngredient1: string }) => ({
+						name: ingredient.strIngredient1
+				}))	
+					}else{
+						throw new Error
+					}
+		}catch{
+			ingredients = null
+		}finally{
+			loading = false
+		}
 	}
 
 	onMount(() => {
 		getAllIngredients();
-		
-		return () => {
-			console.log('destroyed');
-		};
 	});
 
-	async function onSearchIngredient() {
-		const result = await fetch(`${BASE_URL}search.php?i=${searchTerm}`);
-		const json = await result.json();
-
-		const foundIngredient = [
-			{
-				strIngredient1: json.ingredients[0].strIngredient
-			}
-		];
-		ingredients = foundIngredient;
-	}
 </script>
 
 <div class="container m-auto max-w-[1000px] justify-center p-5">
 	<h1 class="my-6">Ingredients</h1>
-	<form on:submit|preventDefault={() => onSearchIngredient()} class='flex'>
-		<input
-			bind:value={searchTerm}
-			class="input variant-form-material indent-2 h-9"
-			type="text"
-			title="search"
-			placeholder="Type ingredient (max 1)"
-		/>
-	</form>
-	<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 my-6 gap-3 mx-auto">
-		{#each ingredients as ingredient}
-			<a
-				class="card text-center py-3 px-1 flex align-middle"
-				href="/ingredient/[slug]/?i={ingredient.strIngredient1}"
-			>
-				<div class="m-auto">
-					<h3 class="mb-3">{ingredient.strIngredient1}</h3>
-					<img
-						src={`https://www.thecocktaildb.com/images/ingredients/${ingredient.strIngredient1.replaceAll(
-							' ',
-							'%20'
-						)}-small.png`}
-						alt="{ingredient.strIngredient1}"
-						class="max-w-full m-auto"
-					/>
-				</div>
-			</a>
+	<IngredientSearchForm {updateSearchResult} />
+	{#if loading}
+	<div class="my-24">
+		<ConicGradient stops={conicStops} spin ></ConicGradient>
+	</div>
+	{/if}
+	<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 my-10 gap-3 mx-auto">
+{#if ingredients}		
+{#each ingredients as ingredient}
+<IngredientCard {ingredient}/>
 		{/each}
+{:else}
+		<h2>Server error :-/</h2>
+{/if}
 	</div>
 </div>

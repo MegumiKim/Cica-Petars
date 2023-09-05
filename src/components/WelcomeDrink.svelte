@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let drink;
+	import type { DrinkType } from "../types";
+
+	export let drink:DrinkType;
 </script>
 
 <div>
@@ -15,7 +17,6 @@
 				<h1 class="underline leading-snug">{drink.name}</h1>
 		</a>
 		</div>
-	{:else}
-		<p>No drink available.</p>
+
 	{/if}
 </div>
