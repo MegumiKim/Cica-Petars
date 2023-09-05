@@ -2,57 +2,57 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { BASE_URL } from '../../../API/constants';
+	import Icon from '@iconify/svelte';
+	//types
+	import type {DrinkThumbType, IngredientType} from "../../../types"
+	//components
 	import Card from '../../../components/Card.svelte';
 	import BackBtn from '../../../components/ui/BackBtn.svelte';
-	import type {DrinkThumbType, IngredientType} from "../../../types"
-	import Icon from '@iconify/svelte';
+	import Loader from '../../../components/ui/Loader.svelte';
+	import { fetchDrinksByIngredient, fetchIngredient } from '../../../API/API';
+	import ServerError from '../../../components/ui/serverError.svelte';
+
 
 	const param = $page.url.searchParams.get('i');
 	const URL_INGREDIENT = BASE_URL + `search.php?i=${param}`;
 	const URL_DRINKS_BY_INGREDIENT = BASE_URL + `/filter.php?i=${param}`;
 
 	let ingredient = {};
-	let drinks: DrinkThumbType[] = [];
+	let drinks: DrinkThumbType[] | void = [];
+	let loading = true;
+	let showError = false;
 
-	async function getIngredient(url: string): Promise<IngredientType> {
-		const result = await fetch(url);
-		const json = await result.json();
-		const data = json.ingredients[0];
-return {
-	name: data.strIngredient,
-	id: data.idIngredient,
-	description: data.strDescription,
-	ABV: data.strAVB,
-	type: data.strType
+async function getIngredient(){
+try{
+ingredient = await fetchIngredient(URL_INGREDIENT);
+}catch{
+	showError = true
+}finally{
+	loading = false
 }
-	}
-
-	async function getDrinksByIngredient(url: string): Promise<void> {
-		const result = await fetch(url);
-		const json = await result.json();
-		return json.drinks.map((drink) => {
-			return {
-				name: drink.strDrink,
-				thumbUrl: drink.strDrinkThumb,
-				id: drink.idDrink
-			};
-		});
-	}
+}
+async function getDrinksByIngredient(){
+try{
+drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
+}catch{
+	showError = true
+}finally{
+	loading = false
+}
+}
 
 	onMount(async () => {
-		ingredient = await getIngredient(URL_INGREDIENT);
-		drinks = await getDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
-		console.log(drinks);
-		
-		return () => {
-			console.log('destroyed');
-		};
+		getIngredient()
+		getDrinksByIngredient()
 	});
 </script>
 
 <div class="m-auto max-w-[1000px] justify-center p-3 sm:px-5">
 <BackBtn />
 	<div class="m-auto">
+		{#if loading}
+			<Loader />
+		{/if}
 		<h1 class="text-center sm:text-5xl m-auto mb-5">{ingredient.name}</h1>
 		<div class="md:flex align-middle max-w-full">
 			<div class="mx-auto my-5 sm:flex gap-5">
@@ -85,6 +85,9 @@ return {
 						{/each}
 					</div>
 				</div>
+			{/if}
+			{#if showError}
+				<ServerError />
 			{/if}
 		</div>
 	</div>

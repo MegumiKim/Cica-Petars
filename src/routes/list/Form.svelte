@@ -1,23 +1,7 @@
 <script lang="ts">
-	import { UserFilter, allDrinks } from '../../drinkStore';
-	import { BASE_URL } from '../../API/constants';
-	import type { DrinkThumbType } from '../../types';
-	import { fetchListOfDrinks } from '../../utils/fetchListOfAllDrinks';
 
-	async function handleChange(event: Event) {
-		let displayName = event.currentTarget.value.replaceAll('_', ' ');
-		UserFilter.update((currentFilter) => displayName);
+	export let handleChange:(event: Event)=>void;
 
-		let drinksData = await fetchListOfDrinks(filteredURL(event.currentTarget.value));
-		allDrinks.set(drinksData)
-	}
-
-	const filteredURL = (category: string) => {
-		if (category === 'Non_Alcoholic') {
-			return `${BASE_URL}/filter.php?a=${category}`;
-		}
-		return `${BASE_URL}/filter.php?c=${category}`;
-	};
 </script>
 
 	<form action="" class="gap-3 mt-3">
