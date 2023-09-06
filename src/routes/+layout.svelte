@@ -21,7 +21,6 @@
 		isMenuVisible = !isMenuVisible;
 	};
 
-// let currentPage = window.location.pathname;
 
 </script>
 
