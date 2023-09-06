@@ -11,12 +11,12 @@
 	import Loader from '../components/ui/Loader.svelte';
 	import ServerError from '../components/ui/serverError.svelte';
 
-
 	const randomDrinkURL: string = BASE_URL + 'random.php';
 
 	let welcomeDrink: DrinkType;
 	let loading:boolean = false;
-let showError = false;
+	let showError = false;
+	
 	onMount(async () => {
 		getRandomDrink()
 	});

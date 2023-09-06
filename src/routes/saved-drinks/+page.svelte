@@ -2,9 +2,10 @@
   import { SavedDrinkStore } from "../../drinkStore";
   import Card from "../../components/Card.svelte";
 import Icon from '@iconify/svelte';
+	import type { DrinkType } from "../../types";
 
 const unSaveDrink =(id:string)=>{
-  SavedDrinkStore.update((prev)=>prev.filter((drink)=>drink.id !==id))
+  SavedDrinkStore.update((prev)=>prev.filter((drink:DrinkType)=>drink.id !==id))
 }
 
 </script>

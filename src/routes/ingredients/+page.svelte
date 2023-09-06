@@ -1,6 +1,7 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 import { BASE_URL } from '../../API/constants';
+// components
 import IngredientSearchForm from './ingredientSearchForm.svelte';
 import IngredientCard from './ingredientCard.svelte';
 import Loader from '../../components/ui/Loader.svelte';
@@ -14,6 +15,10 @@ let loading:boolean = false;
 let showError:boolean = false;
 let noResults:boolean = false;
 
+onMount(() => {
+		getAllIngredients();
+	});
+	
 	export async function getAllIngredients() {
 		loading = true
 		try{
@@ -34,9 +39,7 @@ let noResults:boolean = false;
 		}
 	}
 
-	onMount(() => {
-		getAllIngredients();
-	});
+
 
   async function onSearchIngredient(searchTerm:string):Promise<void> {
 		try{		
