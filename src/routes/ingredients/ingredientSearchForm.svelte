@@ -3,7 +3,7 @@
   let searchTerm:string;
   export let noResults = false;
   export let onSearchIngredient:(searchTerm:string)=>Promise<void>;
-
+export let hideNoResult;
 </script>
 
 <form on:submit|preventDefault={() => onSearchIngredient(searchTerm)} class='flex relative'>
@@ -13,9 +13,9 @@
     type="text"
     title="search"
     placeholder="Type ingredient (max 1)"
-    on:keydown={()=>noResults = false}
+    on:keydown={hideNoResult}
   />
-  <!-- {#if noResults}
+  {#if noResults}
   <p class="my-2">No result</p>
-  {/if} -->
+  {/if}
 </form>

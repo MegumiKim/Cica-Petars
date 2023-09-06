@@ -56,13 +56,16 @@ onMount(() => {
 		}
 	}
 
+function hideNoResult(){
+	noResults = false
+}
 </script>
 
-<div class="container m-auto max-w-[1000px] justify-center p-5">
+<div class="container m-auto max-w-[1000px] justify-center p-5 relative">
 	<h1 class="my-6">Ingredients</h1>
-	<IngredientSearchForm {onSearchIngredient}/>
+	<IngredientSearchForm {onSearchIngredient}{hideNoResult}/>
 	{#if noResults}
-  <p class="my-2 ">No result</p>
+  <p class="my-2 absolute top-32">No result</p>
   {/if}
 	{#if loading}
 	<Loader />
