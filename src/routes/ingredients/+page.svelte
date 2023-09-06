@@ -1,19 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { BASE_URL } from '../../API/constants';
-	import IngredientSearchForm from './ingredientSearchForm.svelte';
-	import IngredientCard from './ingredientCard.svelte';
-	import Loader from '../../components/ui/Loader.svelte';
-	import ServerError from '../../components/ui/serverError.svelte';
+import { onMount } from 'svelte';
+import { BASE_URL } from '../../API/constants';
+import IngredientSearchForm from './ingredientSearchForm.svelte';
+import IngredientCard from './ingredientCard.svelte';
+import Loader from '../../components/ui/Loader.svelte';
+import ServerError from '../../components/ui/serverError.svelte';
 
-	let ingredients: {
-		name: string;
-	}[] | null;
+let ingredients: {
+	name: string;
+}[] | null;
 
-	let loading:boolean = false;
-function updateSearchResult(result:[{name:string}]){
-	ingredients = result
-}
+let loading:boolean = false;
+let showError:boolean = false;
+let noResults:boolean = false;
 
 	export async function getAllIngredients() {
 		loading = true
@@ -39,11 +38,29 @@ function updateSearchResult(result:[{name:string}]){
 		getAllIngredients();
 	});
 
+  async function onSearchIngredient(searchTerm:string):Promise<void> {
+		try{		
+		const result = await fetch(`${BASE_URL}search.php?i=${searchTerm}`);
+		const json = await result.json();
+		ingredients = [
+			{
+				name: json.ingredients[0].strIngredient
+			}
+		];
+  }
+		catch{	
+      noResults = true
+		}
+	}
+
 </script>
 
 <div class="container m-auto max-w-[1000px] justify-center p-5">
 	<h1 class="my-6">Ingredients</h1>
-	<IngredientSearchForm {updateSearchResult} />
+	<IngredientSearchForm {onSearchIngredient}/>
+	{#if noResults}
+  <p class="my-2 ">No result</p>
+  {/if}
 	{#if loading}
 	<Loader />
 	{/if}
@@ -51,8 +68,9 @@ function updateSearchResult(result:[{name:string}]){
 {#if ingredients}		
 {#each ingredients as ingredient}
 <IngredientCard {ingredient}/>
-		{/each}
-{:else}
+{/each}
+{/if}
+{#if showError}
 <ServerError />
 {/if}
 	</div>

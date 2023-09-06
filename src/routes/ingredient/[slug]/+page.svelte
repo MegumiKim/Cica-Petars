@@ -1,27 +1,35 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+
+	//API functions
 	import { BASE_URL } from '../../../API/constants';
-	import Icon from '@iconify/svelte';
+	import { fetchDrinksByIngredient, fetchIngredient } from '../../../API/API';
 	//types
 	import type {DrinkThumbType, IngredientType} from "../../../types"
 	//components
+	import Icon from '@iconify/svelte';
 	import Card from '../../../components/Card.svelte';
 	import BackBtn from '../../../components/ui/BackBtn.svelte';
 	import Loader from '../../../components/ui/Loader.svelte';
-	import { fetchDrinksByIngredient, fetchIngredient } from '../../../API/API';
 	import ServerError from '../../../components/ui/serverError.svelte';
-
 
 	const param = $page.url.searchParams.get('i');
 	const URL_INGREDIENT = BASE_URL + `search.php?i=${param}`;
 	const URL_DRINKS_BY_INGREDIENT = BASE_URL + `/filter.php?i=${param}`;
 
-	let ingredient = {};
+	let ingredient:IngredientType = {
+		name: '',
+		id: '',
+		description: '',
+		ABV: '',
+		type: ''
+	};
 	let drinks: DrinkThumbType[] | void = [];
 	let loading = true;
 	let showError = false;
 
+	// Loads Ingredient details
 async function getIngredient(){
 try{
 ingredient = await fetchIngredient(URL_INGREDIENT);
@@ -31,6 +39,8 @@ ingredient = await fetchIngredient(URL_INGREDIENT);
 	loading = false
 }
 }
+
+	// Loads Related drinks
 async function getDrinksByIngredient(){
 try{
 drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
@@ -63,8 +73,6 @@ drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
 				/>
 				<div class="">
 					<p class="font-bold mb-4">ABV: {ingredient.ABV ? ingredient.ABV : 0} %</p>
-
-
 					<p class="max-h-96 overflow-y-scroll">
 						{ingredient.description ? ingredient.description : 'No description available'}
 						<a target=”_blank” href={`https://en.wikipedia.org/wiki/${ingredient.name}` }

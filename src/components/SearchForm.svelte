@@ -17,15 +17,16 @@
 			if (drink) {
 				searchResult = drink;
 				showResultBox = true;
-		searchTerm = '';
+				searchTerm = '';
 		}
-	}catch(error){
-		console.log(error);
-		showError = true
+			}catch(error){
+				console.log(error);
+				showError = true
 	}
 
 	};
 
+	// Handle user click of search result. Takes user to the drink's specific page
 	const handleClick = () => {
 		showResultBox = false;
 		goto(`/drink/[slug]/?id=${searchResult.id}`);

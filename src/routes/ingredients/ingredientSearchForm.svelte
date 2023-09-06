@@ -1,27 +1,9 @@
 <script lang='ts'>
-	import { BASE_URL } from "../../API/constants";
 
-let showError = false;
-let searchTerm:string;
+  let searchTerm:string;
+  export let noResults = false;
+  export let onSearchIngredient:(searchTerm:string)=>Promise<void>;
 
-export let updateSearchResult: ({})=> void;
-
-  async function onSearchIngredient(searchTerm:string):Promise<void> {
-		try{		
-		const result = await fetch(`${BASE_URL}search.php?i=${searchTerm}`);
-		const json = await result.json();
-		const foundIngredient = [
-			{
-				name: json.ingredients[0].strIngredient
-			}
-		];
-  updateSearchResult(foundIngredient);
-  }
-		catch{
-      updateSearchResult([])
-      showError = true
-		}
-	}
 </script>
 
 <form on:submit|preventDefault={() => onSearchIngredient(searchTerm)} class='flex relative'>
@@ -31,9 +13,9 @@ export let updateSearchResult: ({})=> void;
     type="text"
     title="search"
     placeholder="Type ingredient (max 1)"
-    on:keydown={()=>showError = false}
+    on:keydown={()=>noResults = false}
   />
-  {#if showError}
-  <p class="my-2 absolute top-10">No result</p>
-  {/if}
+  <!-- {#if noResults}
+  <p class="my-2">No result</p>
+  {/if} -->
 </form>
