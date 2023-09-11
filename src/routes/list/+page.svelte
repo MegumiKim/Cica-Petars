@@ -25,7 +25,7 @@
 		const result = await fetch(URL);
 		const json = await result.json();
 
-		drinks = json.drinks.map((drink) => {
+		drinks = json.drinks.map((drink:{}) => {
 				return {
 					name: drink.strDrink,
 					thumbUrl: drink.strDrinkThumb,

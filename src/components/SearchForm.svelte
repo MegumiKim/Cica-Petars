@@ -41,7 +41,7 @@
 			class="input indent-2 h-10 variant-form-material"
 			title="search"
 			type="text"
-			placeholder="search by name"
+			placeholder="Type Drink Name"
 			bind:value={searchTerm}
 			on:keydown={()=>showError = false}
 		/>

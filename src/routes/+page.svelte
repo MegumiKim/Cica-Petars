@@ -8,13 +8,11 @@
 	import { BASE_URL } from '../API/constants';
 	// Svelte
 	import { onMount } from 'svelte';
-	import Loader from '../components/ui/Loader.svelte';
 	import ServerError from '../components/ui/serverError.svelte';
 
 	const randomDrinkURL: string = BASE_URL + 'random.php';
 
 	let welcomeDrink: DrinkType;
-	let loading:boolean = false;
 	let showError = false;
 	
 	onMount(async () => {
@@ -22,17 +20,15 @@
 	});
 
 	async function getRandomDrink() {
-			loading = true
 			try{
 				welcomeDrink = await fetchNewDrink(randomDrinkURL);
 			}catch{
 				showError = true
 			}
-			loading = false
 	}
 </script>
 
-<div class="m-auto sm:flex max-w-[1000px] justify-center p-4 gap-4 h-full">
+<div class="m-auto sm:flex max-w-[1000px] justify-center px-4 gap-4 h-full">
 	<section class="flex-1 m-auto flex flex-col my-6 justify-center text-center">
 		<h1 class="leading-10">Welcome to Čika Petar's</h1>
 		<p class="">Discover The World of Cocktails</p>
@@ -48,9 +44,6 @@
 	</section>
 
 	<section class="flex-1 m-auto">
-		{#if loading}
- 		<Loader />
-		{/if}
 		{#if showError}
 		<ServerError />
 		{/if}

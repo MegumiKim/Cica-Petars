@@ -7,7 +7,7 @@
 	<form action="" class="gap-3 mt-3">
 		<select
 			class="select variant-form-material"
-			placeholder="Select Category"
+			placeholder="Select Drink Category"
 			on:change={(e) => {
 				handleChange(e);
 			}}
