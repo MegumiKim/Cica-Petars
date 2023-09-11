@@ -3,27 +3,37 @@
 	import { fetchNewDrink } from '../API/API';
 	import { goto } from '$app/navigation';
 	import type { DrinkType } from '../types';
+	import { allDrinks } from '../drinkStore';
 
 	export let searchTerm: string = '';
 	let showResultBox = false;
 	let showError = false;
 	let searchResult: DrinkType ;
 
+	// function filterFromAllDrinksStore(){
+	// 	const filteredItem = $allDrinks.filter((drink) => drink.name?.includes(searchTerm));
+	// 	console.log(filteredItem);
+		
+	// }
+
 	const handleSubmit = async () => {
-		try{
-			const URL: string = `${BASE_URL}search.php?s=${searchTerm}`;
-			const drink = await fetchNewDrink(URL);
-
-			if (drink) {
-				searchResult = drink;
-				showResultBox = true;
-				searchTerm = '';
+		if(searchTerm.length > 0){
+			try{
+				
+				const URL: string = `${BASE_URL}search.php?s=${searchTerm}`;
+				const drink = await fetchNewDrink(URL);
+		
+				// filterFromAllDrinksStore()
+				if (drink) {
+					searchResult = drink;
+					showResultBox = true;
+					searchTerm = '';
+			}
+				}catch(error){
+					console.log(error);
+					showError = true
 		}
-			}catch(error){
-				console.log(error);
-				showError = true
-	}
-
+		}
 	};
 
 	// Handle user click of search result. Takes user to the drink's specific page
@@ -47,7 +57,7 @@
 		/>
 		{#if showResultBox}
 
-		<button class="block select absolute" on:click={() => handleClick()}>
+		<button class="block select absolute text-left" on:click={() => handleClick()}>
 				{searchResult.name}</button>
 		{/if}
 		{#if showError}
