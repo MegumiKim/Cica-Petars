@@ -16,18 +16,16 @@
 
 	let isMenuVisible = false;
 
-	// Toggle Nav Menu 
+	// Toggle Nav Menu
 	const toggleMenuOpen = () => {
 		isMenuVisible = !isMenuVisible;
 	};
-
-
 </script>
 
 <!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end" >
+		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">
 				<a href="/" class="uppercase max-w-[60px] hover:rotate-12 rounded-lg p-1"
 					><img src={logo} alt="logo" class="max-w-full" /></a
@@ -43,19 +41,21 @@
 						<div
 							class="{isMenuVisible
 								? 'block'
-								: 'hidden'} text-right absolute top-11 right-0 p-3 rounded sm:static sm:flex sm:py-0 m-auto sm:order-2 sm:bg-transparent bg-purple-950 bg-opacity-95 "
+								: 'hidden'} text-right absolute top-11 right-0 p-3 rounded sm:static sm:flex sm:py-0 m-auto sm:order-2 sm:bg-transparent bg-purple-950 bg-opacity-95"
 						>
-						<a href="/list/" class="font-bold px-5 py-2  my-3 block hover:variant-outline-primary"
-						><button on:click={toggleMenuOpen}>Categories</button></a
-						>
-						<a
-						href="/ingredients/"
-						class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"><button on:click={toggleMenuOpen}>Ingredients</button></a
-						>
-						<a
-							href="/saved-drinks/"
-							class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"><button on:click={toggleMenuOpen}>Saved</button></a
-						>
+							<a href="/list/" class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"
+								><button on:click={toggleMenuOpen}>Categories</button></a
+							>
+							<a
+								href="/ingredients/"
+								class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"
+								><button on:click={toggleMenuOpen}>Ingredients</button></a
+							>
+							<a
+								href="/saved-drinks/"
+								class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"
+								><button on:click={toggleMenuOpen}>Saved</button></a
+							>
 						</div>
 					</div>
 				</div>

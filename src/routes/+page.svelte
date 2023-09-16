@@ -14,17 +14,17 @@
 
 	let welcomeDrink: DrinkType;
 	let showError = false;
-	
+
 	onMount(async () => {
-		getRandomDrink()
+		getRandomDrink();
 	});
 
 	async function getRandomDrink() {
-			try{
-				welcomeDrink = await fetchNewDrink(randomDrinkURL);
-			}catch{
-				showError = true
-			}
+		try {
+			welcomeDrink = await fetchNewDrink(randomDrinkURL);
+		} catch {
+			showError = true;
+		}
 	}
 </script>
 
@@ -33,10 +33,7 @@
 		<h1 class="leading-10">Welcome to Čika Petar's</h1>
 		<p class="">Discover The World of Cocktails</p>
 		<div class="flex justify-center mt-4 gap-4">
-			<a
-				class="sm:text-lg px-5 font-bold btn variant-ringed-primary"
-				href="/list">Categories</a
-			>
+			<a class="sm:text-lg px-5 font-bold btn variant-ringed-primary" href="/list">Categories</a>
 			<a href="/ingredients/" class="sm:text-lg font-bold btn variant-ghost-surface px-5"
 				>Ingredients</a
 			>
@@ -45,7 +42,7 @@
 
 	<section class="flex-1 m-auto">
 		{#if showError}
-		<ServerError />
+			<ServerError />
 		{/if}
 		<WelcomeDrink drink={welcomeDrink} />
 		<button
@@ -55,5 +52,6 @@
 		>
 	</section>
 </div>
+
 <style lang="postcss">
 </style>

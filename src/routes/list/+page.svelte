@@ -4,28 +4,29 @@
 
 	import { BASE_URL } from '../../API/constants';
 	import type { DrinkThumbType } from '../../types';
-	
+
 	//components
 	import Form from './Form.svelte';
 	import Card from '../../components/Card.svelte';
 	import ServerError from '../../components/ui/serverError.svelte';
 	import Loader from '../../components/ui/Loader.svelte';
+	import { allDrinks } from '../../drinkStore';
 
-	let category:string = ""
-	let drinks:DrinkThumbType[] = [];
+	let category: string = '';
+	let drinks: DrinkThumbType[] = [];
 	let loading = true;
 	let showError = false;
 
 	onMount(async () => {
-		await fetchListOfDrinks(`${BASE_URL}/filter.php?c=Ordinary_Drink`)
+		await fetchListOfDrinks(`${BASE_URL}/filter.php?c=Ordinary_Drink`);
 	});
 
 	export async function fetchListOfDrinks(URL: string) {
-	try {
-		const result = await fetch(URL);
-		const json = await result.json();
+		try {
+			const result = await fetch(URL);
+			const json = await result.json();
 
-		drinks = json.drinks.map((drink:{}) => {
+			drinks = json.drinks.map((drink: {}) => {
 				return {
 					name: drink.strDrink,
 					thumbUrl: drink.strDrinkThumb,
@@ -33,19 +34,19 @@
 				};
 			});
 
-	} catch (e) {
-		showError = true
-		console.log(e);
-	} finally{
-		loading = false
+			allDrinks.set(drinks);
+		} catch (e) {
+			showError = true;
+			console.log(e);
+		} finally {
+			loading = false;
+		}
 	}
-}
 
-
-async function handleChange(event: Event) {
-	const userSelect: string = event.currentTarget.value
-	category = userSelect.replaceAll('_', ' ');
-	await fetchListOfDrinks(filteredURL(userSelect));		
+	async function handleChange(event: Event) {
+		const userSelect: string = event.currentTarget.value;
+		category = userSelect.replaceAll('_', ' ');
+		await fetchListOfDrinks(filteredURL(userSelect));
 	}
 
 	const filteredURL = (category: string) => {
@@ -54,13 +55,11 @@ async function handleChange(event: Event) {
 		}
 		return `${BASE_URL}/filter.php?c=${category}`;
 	};
-
-
 </script>
 
 <div class="container m-auto max-w-[1000px] justify-center p-5">
 	<h1 class="my-6">Categories</h1>
-	<Form {handleChange}/>
+	<Form {handleChange} />
 	{#if loading}
 		<Loader />
 	{/if}

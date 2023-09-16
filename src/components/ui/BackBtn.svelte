@@ -1,8 +1,8 @@
 <button
-on:click={() => {
-  history.back();
-}}
-class="btn btn-sm text-sm variant-outline-surface "
+	on:click={() => {
+		history.back();
+	}}
+	class="btn btn-sm text-sm variant-outline-surface"
 >
-Back
+	Back
 </button>

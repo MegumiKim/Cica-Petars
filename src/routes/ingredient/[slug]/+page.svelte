@@ -6,7 +6,7 @@
 	import { BASE_URL } from '../../../API/constants';
 	import { fetchDrinksByIngredient, fetchIngredient } from '../../../API/API';
 	//types
-	import type {DrinkThumbType, IngredientType} from "../../../types"
+	import type { DrinkThumbType, IngredientType } from '../../../types';
 	//components
 	import Icon from '@iconify/svelte';
 	import Card from '../../../components/Card.svelte';
@@ -18,7 +18,7 @@
 	const URL_INGREDIENT = BASE_URL + `search.php?i=${param}`;
 	const URL_DRINKS_BY_INGREDIENT = BASE_URL + `/filter.php?i=${param}`;
 
-	let ingredient:IngredientType = {
+	let ingredient: IngredientType = {
 		name: '',
 		id: '',
 		description: '',
@@ -30,35 +30,35 @@
 	let showError = false;
 
 	// Loads Ingredient details
-async function getIngredient(){
-try{
-ingredient = await fetchIngredient(URL_INGREDIENT);
-}catch{
-	showError = true
-}finally{
-	loading = false
-}
-}
+	async function getIngredient() {
+		try {
+			ingredient = await fetchIngredient(URL_INGREDIENT);
+		} catch {
+			showError = true;
+		} finally {
+			loading = false;
+		}
+	}
 
 	// Loads Related drinks
-async function getDrinksByIngredient(){
-try{
-drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
-}catch{
-	showError = true
-}finally{
-	loading = false
-}
-}
+	async function getDrinksByIngredient() {
+		try {
+			drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
+		} catch {
+			showError = true;
+		} finally {
+			loading = false;
+		}
+	}
 
 	onMount(async () => {
-		getIngredient()
-		getDrinksByIngredient()
+		getIngredient();
+		getDrinksByIngredient();
 	});
 </script>
 
 <div class="m-auto max-w-[1000px] justify-center p-3 sm:px-5">
-<BackBtn />
+	<BackBtn />
 	<div class="m-auto">
 		{#if loading}
 			<Loader />
@@ -75,8 +75,12 @@ drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
 					<p class="font-bold mb-4">ABV: {ingredient.ABV ? ingredient.ABV : 0} %</p>
 					<p class="max-h-96 overflow-y-scroll">
 						{ingredient.description ? ingredient.description : 'No description available'}
-						<a target=”_blank” href={`https://en.wikipedia.org/wiki/${ingredient.name}` }
-						class="hover:text-yellow-500 cursor-pointer underline block mt-4">Jump to Wikipedia <Icon icon="tdesign:jump" class="inline-block" /></a>
+						<a
+							target="”_blank”"
+							href={`https://en.wikipedia.org/wiki/${ingredient.name}`}
+							class="hover:text-yellow-500 cursor-pointer underline block mt-4"
+							>Jump to Wikipedia <Icon icon="tdesign:jump" class="inline-block" /></a
+						>
 					</p>
 				</div>
 			</div>
