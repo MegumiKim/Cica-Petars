@@ -1,6 +1,6 @@
 <script lang="ts">
 	let searchTerm: string;
-	export let noResults:boolean = false;
+	export let noResults: boolean = false;
 	export let onSearchIngredient: (searchTerm: string) => Promise<void>;
 	export let hideNoResult;
 </script>

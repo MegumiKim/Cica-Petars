@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import DOMPurify from 'dompurify';
 	import { BASE_URL } from '../../API/constants';
 	// components
 	import IngredientSearchForm from './ingredientSearchForm.svelte';
@@ -42,9 +43,12 @@
 	}
 
 	async function onSearchIngredient(searchTerm: string): Promise<void> {
+		let cleanInput = DOMPurify.sanitize(searchTerm);
 		try {
-			const result = await fetch(`${BASE_URL}search.php?i=${searchTerm}`);
+			const result = await fetch(`${BASE_URL}search.php?i=${cleanInput}`);
 			const json = await result.json();
+			console.log(result);
+
 			ingredients = [
 				{
 					name: json.ingredients[0].strIngredient
@@ -64,7 +68,7 @@
 	<h1 class="my-6">Ingredients</h1>
 	<IngredientSearchForm {onSearchIngredient} {hideNoResult} />
 	{#if noResults}
-		<p class="my-2 absolute top-32">No result</p>
+		<p class="my-2 absolute top-32">No Result</p>
 	{/if}
 	{#if loading}
 		<Loader />
