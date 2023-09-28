@@ -43,20 +43,26 @@
 	}
 
 	async function onSearchIngredient(searchTerm: string): Promise<void> {
-		let cleanInput = DOMPurify.sanitize(searchTerm);
-		try {
-			const result = await fetch(`${BASE_URL}search.php?i=${cleanInput}`);
-			const json = await result.json();
-			console.log(result);
+	if(searchTerm.trim().length > 0){
 
-			ingredients = [
-				{
-					name: json.ingredients[0].strIngredient
-				}
-			];
-		} catch {
-			noResults = true;
-		}
+	let cleanInput = DOMPurify.sanitize(searchTerm);
+	try {
+		const result = await fetch(`${BASE_URL}search.php?i=${cleanInput}`);
+		const json = await result.json();
+
+		ingredients = [
+			{
+				name: json.ingredients[0].strIngredient
+			}
+		];
+	} catch {
+		noResults = true;
+		getAllIngredients()
+	}
+}
+if(searchTerm.trim().length === 0){
+	getAllIngredients();
+}
 	}
 
 	function hideNoResult() {
