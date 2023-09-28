@@ -46,7 +46,7 @@
 							<a href="/list/" class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"
 								><button on:click={toggleMenuOpen}>Categories</button></a
 							>
-							<a
+							<a data-sveltekit-reload
 								href="/ingredients/"
 								class="font-bold px-5 py-2 my-3 block hover:variant-outline-primary"
 								><button on:click={toggleMenuOpen}>Ingredients</button></a
