@@ -79,7 +79,7 @@ if(searchTerm.trim().length === 0){
 	{#if loading}
 		<Loader />
 	{/if}
-	<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 my-10 gap-3 mx-auto">
+	<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 my-10 gap-3 mx-auto">
 		{#if ingredients}
 			{#each ingredients as ingredient}
 				<IngredientCard {ingredient} />

@@ -1,16 +1,15 @@
 <script lang="ts">
 	import type { DrinkThumbType } from '../types';
 	export let drink: DrinkThumbType;
-	// import jump from '../utils/jumpToDrinkPage';
 </script>
 
-<a href="/drink/[slug]/?id={drink.id}" class="card card-hover">
+<a href="/drink/[slug]/?id={drink.id}" class="card card-hover variant-glass-surface hover:bg-transparent">
 	<img
 		src="{drink.thumbUrl}/preview"
 		alt={drink.name}
-		class="bg-back/50 w-full outline outline-1"
+		class="w-full"
 	/>
-	<h3 class="p-2 truncate bg-opacity-60 w-full variant-glass-surface outline outline-1">
-		{drink.name}
-	</h3>
+		<h3 class="p-2 text-center w-full m-auto ">
+			{drink.name}
+		</h3>
 </a>

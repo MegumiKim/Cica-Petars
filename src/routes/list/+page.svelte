@@ -1,7 +1,6 @@
 <script lang="ts">
 	// Svelte
 	import { onMount } from 'svelte';
-
 	import { BASE_URL } from '../../API/constants';
 	import type { DrinkThumbType } from '../../types';
 
@@ -18,14 +17,16 @@
 	let showError = false;
 
 	onMount(async () => {
-		await fetchListOfDrinks(`${BASE_URL}/filter.php?c=Ordinary_Drink`);
+		await fetchListOfDrinks(`${BASE_URL}/filter.php?c=Cocktail`);
 	});
 
 	export async function fetchListOfDrinks(URL: string) {
 		try {
 			const result = await fetch(URL);
 			const json = await result.json();
-
+			
+			console.log(json);
+			
 			drinks = json.drinks.map((drink: {}) => {
 				return {
 					name: drink.strDrink,
@@ -68,7 +69,7 @@
 			<h2>{category}</h2>
 			<h2 class="">({drinks.length} drinks)</h2>
 		</div>
-		<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
+		<div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
 			{#each drinks as drink}
 				<Card {drink} />
 			{/each}
