@@ -1,4 +1,4 @@
-import type { DrinkType, IngredientType } from '../types';
+import type { DrinkType, IngredientType, DrinkThumbType_copy } from '../types';
 import { filterIngredients } from '../utils/ingredientsFilter';
 
 // Fetch data for specific drink page
@@ -34,9 +34,10 @@ export async function fetchIngredient(url: string): Promise<IngredientType> {
 		return {
 			name: data.strIngredient,
 			id: data.idIngredient,
-			description: data.strDescription,
-			ABV: data.strAVB,
-			type: data.strType
+			description: data.strDescription ? data.strDescription.split('\n') : [],
+			ABV: data.strABV,
+			type: data.strType,
+			alcohol: data.strAlcohol
 		};
 	} else {
 		throw new Error();
@@ -49,7 +50,7 @@ export async function fetchDrinksByIngredient(url: string): Promise<void> {
 	const json = await result.json();
 
 	if (json.drinks) {
-		return json.drinks.map((drink) => {
+		return json.drinks.map((drink: DrinkThumbType_copy) => {
 			return {
 				name: drink.strDrink,
 				thumbUrl: drink.strDrinkThumb,

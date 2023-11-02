@@ -6,9 +6,10 @@ export type BasicIngredientType = {
 export type IngredientType = {
 	name: string;
 	id: string;
-	description: string;
+	description: [];
 	ABV: string;
 	type: string;
+	alcohol: string;
 };
 
 export interface DrinkThumbType {
@@ -17,6 +18,11 @@ export interface DrinkThumbType {
 	id: string | undefined;
 }
 
+export interface DrinkThumbType_copy {
+	idDrink: string;
+	strDrinkThumb: string;
+	strDrink: string;
+}
 export interface DrinkType extends DrinkThumbType {
 	category: string;
 	glass: string;

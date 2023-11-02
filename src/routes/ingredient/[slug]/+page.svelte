@@ -21,9 +21,10 @@
 	let ingredient: IngredientType = {
 		name: '',
 		id: '',
-		description: '',
+		description: [],
 		ABV: '',
-		type: ''
+		type: '',
+		alcohol: ''
 	};
 	let drinks: DrinkThumbType[] | void = [];
 	let loading = true;
@@ -33,6 +34,7 @@
 	async function getIngredient() {
 		try {
 			ingredient = await fetchIngredient(URL_INGREDIENT);
+			
 		} catch {
 			showError = true;
 		} finally {
@@ -41,11 +43,12 @@
 	}
 
 	// Loads Related drinks
-	async function getDrinksByIngredient() {
+	async function getDrinksByIngredient(){
 		try {
 			drinks = await fetchDrinksByIngredient(URL_DRINKS_BY_INGREDIENT);
 		} catch {
 			showError = true;
+			drinks = []
 		} finally {
 			loading = false;
 		}
@@ -66,27 +69,38 @@
 		<h1 class="text-center sm:text-5xl m-auto mb-5">{ingredient.name}</h1>
 		<div class="md:flex align-middle max-w-full">
 			<div class="mx-auto my-5 sm:flex gap-5">
+				{#if ingredient.name}
 				<img
 					src="https://www.thecocktaildb.com/images/ingredients/{ingredient.name}-Medium.png"
 					alt={ingredient.name}
 					class="m-auto"
 				/>
+				{/if}
 				<div class="">
-					<p class="font-bold mb-4">ABV: {ingredient.ABV ? ingredient.ABV : 0} %</p>
-					<p class="max-h-96 overflow-y-scroll">
-						{ingredient.description ? ingredient.description : 'No description available'}
-						<a
-							target="”_blank”"
-							href={`https://en.wikipedia.org/wiki/${ingredient.name}`}
-							class="hover:text-yellow-500 cursor-pointer underline block mt-4"
-							>Jump to Wikipedia <Icon icon="tdesign:jump" class="inline-block" /></a
-						>
-					</p>
+
+					<p class="font-bold mb-4"> {ingredient.type ? `Type: ${ingredient.type}`:"" }</p>
+					<p class="font-bold mb-4"> {(ingredient.alcohol === 'Yes' && ingredient.ABV) ? `Alcohol By Volume: ${ingredient.ABV} %`  : ""}</p>
+					
+					{#if !ingredient.description.length}
+					<p>No Description Available :-/</p>
+					{:else}
+					<div class="max-h-96 overflow-y-scroll ">
+						{#each ingredient.description as desc}
+							<p class="mb-3">{desc}</p>
+						{/each}
+					</div>
+					{/if}
+					<a
+						target="”_blank”"
+						href={`https://en.wikipedia.org/wiki/${ingredient.name}`}
+						class="hover:text-yellow-500 cursor-pointer underline block mt-4"
+						>Jump to Wikipedia <Icon icon="tdesign:jump" class="inline-block" /></a
+					>
 				</div>
 			</div>
 		</div>
 		<div class="m-auto">
-			{#if drinks.length}
+			{#if Array.isArray(drinks) && drinks.length}
 				<div class="container m-auto">
 					<h2 class="text-2xl italic">
 						Recipe with {ingredient.name} : {drinks.length} drinks
